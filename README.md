@@ -79,11 +79,15 @@ flowchart LR
 - **StandardScaler** pour la normalisation
 - Comparaison de **3 algorithmes** :
 
-| Modèle | Rôle |
-|---|---|
-| Logistic Regression | Baseline interprétable |
-| Random Forest | Modèle d'ensemble, robuste au bruit |
-| **XGBoost** ⭐ | Modèle retenu — meilleur AUC en validation |
+| Modèle | AUC (test) | AUC (cross-validation) |
+|---|---|---|
+| Logistic Regression | **0.839** | 0.931 ± 0.063 |
+| Random Forest | 0.821 | 0.932 ± 0.044 |
+| XGBoost | 0.807 | 0.932 ± 0.061 |
+
+En cross-validation, les 3 modèles sont quasiment équivalents (~0.93 d'AUC, écarts-types qui se chevauchent). Sur le test set, la Logistic Regression a le meilleur AUC.
+
+**Modèle retenu : XGBoost.** Le choix n'est pas justifié par l'AUC (les 3 modèles sont proches), mais par sa compatibilité native avec SHAP (`TreeExplainer`) pour l'explicabilité — étape centrale de ce projet — et sa capacité à capter des interactions non-linéaires entre features sans feature engineering manuel supplémentaire. Une amélioration possible serait de tuner ses hyperparamètres (`max_depth`, `learning_rate`, `n_estimators`) pour aller chercher un gain d'AUC plus net sur le test set.
 
 - Évaluation : AUC-ROC, classification report, matrice de confusion, courbes ROC comparatives (voir `outputs/roc_curves.html` pour les scores exacts)
 
